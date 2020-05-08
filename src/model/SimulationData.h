@@ -36,8 +36,6 @@ class SimulationData{
 	bool isBProducer;
 	bool isAReuser;
 	bool isBReuser;
-	//'b' : barabasi-albert. 'e' : erdos-renyi. 'c' : complete. 'r' : regular;
-	char graphType;
 	bool bEph;
 	bool printPartials;
 

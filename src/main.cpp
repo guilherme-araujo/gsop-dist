@@ -16,7 +16,6 @@ int main(int argc, char* argv[]){
 	//Default simulation values
 	int samples = 1;
 	int cycles = 1000;
-	int numNodes = 100;
 	double ephBonus = 0.04;
 	double ephBonusB = -1;
 	int threads = 1;
@@ -28,7 +27,6 @@ int main(int argc, char* argv[]){
 	int ephTime = 30;
 	bool ni = false;
 	int sampleid = 0;
-	char graphType = 'r';
 	bool bEph = 1;
 	int behaviorTime = 30;
 	double reuseBonusMultiplierA = 0.3;
@@ -40,7 +38,6 @@ int main(int argc, char* argv[]){
 	//Simulation values parsing from argv
 	string arg_samples = "samples";
 	string arg_cycles = "cycles";
-	string arg_numNodes = "numNodes";
 	string arg_ephBonus = "ephBonus";
 	string arg_ephBonusB = "ephBonusB";
 	string arg_threads = "threads";
@@ -52,7 +49,6 @@ int main(int argc, char* argv[]){
 	string arg_ephTime = "ephTime";
 	string arg_ni = "ni";
 	string arg_sampleid = "sampleId";
-	string arg_graphtype = "graphType";
 	string arg_bEph = "bEph";
 	string arg_behaviorTime = "behaviorTime";
 	string arg_reuseBonusMultiplierA = "rBMA";
@@ -66,8 +62,6 @@ int main(int argc, char* argv[]){
 			samples = stoi(argv[i+1]);
 		}else if(arg_cycles.compare(argv[i])==0){
 			cycles = stoi(argv[i+1]);
-		}else if(arg_numNodes.compare(argv[i])==0){
-			numNodes = stoi(argv[i+1]);
 		}else if(arg_ephBonus.compare(argv[i])==0){
 			ephBonus = stod(argv[i+1]);
 		}else if(arg_ephBonusB.compare(argv[i])==0){
@@ -88,8 +82,6 @@ int main(int argc, char* argv[]){
 			ni = stoi(argv[i+1]);
 		}else if (arg_sampleid.compare(argv[i])==0){
 			sampleid = stoi(argv[i+1]);
-		}else if (arg_graphtype.compare(argv[i])==0){
-			graphType = argv[i+1][0];
 		}else if(arg_bEph.compare(argv[i])==0){
 			bEph = stoi(argv[i+1]);
 		}else if (arg_behaviorTime.compare(argv[i])==0){
@@ -139,7 +131,6 @@ int main(int argc, char* argv[]){
 	simulationData.g = g;
 	simulationData.ephPopHistory = ephPopHistory;
 	simulationData.sampleid = sampleid;
-	simulationData.graphType = graphType;
 	simulationData.bEph = bEph;
 	simulationData.behaviorTime = behaviorTime;
 	simulationData.reuseBonusMultiplierA = reuseBonusMultiplierA;
