@@ -1,0 +1,4 @@
+#ignoring generated binary
+src/gsop
+src/graph.txt
+src/opts_graph.txt
