@@ -1,13 +1,23 @@
+# Graph Simulator of Populations - gsop
+
+Clone this repository with 
+    
+	git clone
+	
+The instructions below will guide you through the process of compiling the simulator program and setting up its parameters, and a plot and analysis script for visualization of its results.
+
 ## Instructions for building and running simulations
 
-The simulation is composed of a C++ program, which runs the simulation itself, and a helper python script which builds the initial graph. The complete simulation requires four steps:
+The simulation is composed of a C++ program, which runs the simulation itself, and a helper python script which builds the initial graph. Bootstraping the complete simulation requires four steps:
 
  1. Build the simulation executable
  2. Run python script for generating a graph
  3. Run the simulation with desired parameters 
  4. Plot/analyze the simulation output
 
- Building the C++ project on each machine where it will be run is recommended for performance reasons.
+Building the C++ project on each machine where it will be run is recommended for performance reasons. Sharing the same binary with environments with a different operatring system, processor vendor/model or chipset may cause performance drops or failure to execute. This simulation has been tested on Linux kernels 3.10.X 4.15.X and 5.6.X on AMD and Intel microprocessors.
+
+Step 1. only needs to be done once for every machine the simulation will run
 
  ### 1. Building the simulation executable
 
