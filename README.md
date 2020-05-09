@@ -37,7 +37,7 @@ Sample script call:
 
 ###  3. Simulation parameters
 
-The following table has all the parameters the simulation binary will accept.
+The following table has all the parameters the simulation binary file will accept.
 
 | parameter         | type   | default | description | 
 |-|-|-|-|
@@ -62,4 +62,44 @@ The following table has all the parameters the simulation binary will accept.
 | bBB               | double |0.93     |building bonus for type B individuals. given bBB 0.97, when a type B node is at PRODUCING state, it will be given a relative fitness value of 0.93  | 
 | printPartials     | boolean|false    |will print partial results at each 500 cycles. semicolon-separated output formatted as: partial;cycle;type A node count;type B node cout;total eph count;sample id   | 
 
+Sample simulation call:
 
+    ./gsop samples 100 ephStartRatio 0.60 ephBuildingRatio 0.667 ephReusingRatio 0.166 ephBonus 0.01 ephBonusB 0.08 threads 4 cycles 5000 ephTime 30 rBMA 8 rBMB 0.125 bBA 0.95 bBB 0.95
+
+This command will run the simulation with the following parameters:
+
+* 40% of all nodes will start SEARCHING, &asymp;40% of all nodes will start PRODUCING, &asymp;10% of all nodes will start USING and &asymp;10% of all nodes will start USING_SHARED
+* A will be given 0.01 bonus when USING, 0.08 when USING_SHARED and -0.05 (0.95 - 1) when PRODUCING
+* B will be given 0.08 bonus when USING, 0.01 when USING_SHARED and -0.05 (0.95 - 1) when PRODUCING
+* All 100 simulations will run until a limit of 5000 cycles is reached
+* 4 simulations are run in parallel, in different threads. The complete set of 100 samples is expected to finish 4 times faster than if the 'threads' parameter were '1' on a four-core system.
+* Extended phenotypes will last for 30 cycles after being built
+
+The expected output format is: 
+
+    node type A count;node type B count;cycle of fixation;elapsed seconds;sample id; count of ephs attached to type A nodes;count of ephs attached to type B nodes; 
+
+Shortened output example for the simulation with the parameters above, given a Barabasi-albert graph of 200 nodes:
+
+    0;200;2174;1.0609;80;0;20
+    39;161;-1;2.06202;78;1;14
+    200;0;1989;0.756209;81;25;0
+    74;126;-1;2.0669;79;12;10
+    0;200;2725;1.13064;82;0;22
+    200;0;1903;0.833711;83;15;0
+    200;0;2622;0.895532;85;21;0
+    ....
+
+### 4. Plot/analyze the simulation output
+
+Proposed plotting scripts and examples are avaliable at the plot/ folder of this repository.
+
+The following scripts require the python packages *pandas, numpy and seaborn*
+
+* plot/convert.py refactors output data to a more plot-friendly format. It assumes the printPartials parameter was set to 1 (true) in the simulation and the limit is at 5000 cycles
+* plot/plot.py takes the file outputted by convert.py as a parameter and outputs three files. The example assumes a graph of 500 nodes
+    * A boxplot with a distribution of nodes for each type every 500 cycles up to 5000.
+    * fixc-{file name}.txt is a comma-separated file containing
+        * first line: samples with fixation of type A;with fixation of type B;undefined simulations (none fixed)
+        * second line: % of type A fixed samples;% of type B fixed samples;% of undefined samples;% of type A nodes on undefined samples;% of type B nodes on undefined samples
+    * perc-{file name}.txt outputs the numerical summary ( python function *pandas.DataFrame.describe* ) of type A and type B nodes, in that order.
