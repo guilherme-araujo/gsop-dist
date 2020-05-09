@@ -2,7 +2,7 @@
 
 Clone this repository with 
     
-	git clone
+	git clone https://github.com/guilherme-araujo/gsop-dist.git
 	
 The instructions below will guide you through the process of compiling the simulator program and setting up its parameters, and a plot and analysis script for visualization of its results.
 
