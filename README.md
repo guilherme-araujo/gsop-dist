@@ -56,10 +56,10 @@ The following table has all the parameters the simulation binary file will accep
 | sampleId          | integer|0        |numerical sample identifier outputted at the same line of the result, for identification only. No effect on the simulation itself.  | 
 | bEph              | boolean|true     |(*disabled*) defines if type B individuals can use extended phenotypes. No effect when running most recent simulation ( *simulationV8() at simulation.cpp* )  | 
 | behaviorTime      | integer|30       |how many cycles each node will spend at each behavior state  | 
-| rBMA              | double |0.3      |reuse bonus multiplier for type A individuals. 0.3 means that given ephBonus of 0.1, when a type A node is at USING_SHARED state, it will be given a relative fitness bonus of 0.1 * 0.3 = 0.03  | 
-| rBMB              | double |0.9      |reuse bonus multiplier for type B individuals. 0.9 means that given ephBonusB of 0.1, when a type B node is at USING_SHARED state, it will be given a relative fitness bonus of 0.1 * 0.9 = 0.09  | 
-| bBA               | double |0.99     |building bonus for type A individuals. given bBA 0.99, when a type A node is at PRODUCING state, it will be given a relative fitness value of 0.99  | 
-| bBB               | double |0.93     |building bonus for type B individuals. given bBB 0.97, when a type B node is at PRODUCING state, it will be given a relative fitness value of 0.93  | 
+| rBMA              | double |0.3      |reuse bonus multiplier for type A individuals. 0.3 means that given ephBonus of 0.1, when a type A node is at USING_SHARED state, it will be given a relative fitness bonus of 0.1 * 0.3 = 0.03. If set to -1.0 type A individuals will not enter USING_SHARED state  | 
+| rBMB              | double |0.9      |reuse bonus multiplier for type B individuals. 0.9 means that given ephBonusB of 0.1, when a type B node is at USING_SHARED state, it will be given a relative fitness bonus of 0.1 * 0.9 = 0.09. If set to -1.0 type B individuals will not enter USING_SHARED state  | 
+| bBA               | double |0.99     |building bonus for type A individuals. given bBA 0.99, when a type A node is at PRODUCING state, it will be given a relative fitness value of 0.99. If set to -1.0 type A individuals will not enter PRODUCING state  | 
+| bBB               | double |0.93     |building bonus for type B individuals. given bBB 0.97, when a type B node is at PRODUCING state, it will be given a relative fitness value of 0.93. If set to -1.0 type B individuals will not enter PRODUCING state  | 
 | printPartials     | boolean|false    |will print partial results at each 500 cycles. semicolon-separated output formatted as: partial;cycle;type A node count;type B node cout;total eph count;sample id   | 
 
 Sample simulation call:
