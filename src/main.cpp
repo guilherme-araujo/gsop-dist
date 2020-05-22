@@ -8,7 +8,7 @@
 using namespace std;
 
 void waitupdate(){
-	usleep(100000);
+	usleep(10000);
 }
 
 int main(int argc, char* argv[]){
