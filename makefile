@@ -12,7 +12,7 @@ OBJS=$(subst .cc,.o,$(SRCS))
 all: make
 
 make: $(OBJS)
-	$(CXX) $(LDFLAGS) -o ./dist/gsop $(OBJS)
+	$(CXX) $(CPPFLAGS) $(LDFLAGS) -o ./dist/gsop $(OBJS)
 
 clean:
 	$(RM) $(OBJS)

@@ -10,5 +10,4 @@ Simulation:
 
 Conversion and plotting:
 
-    python3 convert.py exp.csv
-    python plot.py conv_exp.csv
+    python3 convert.py exp.csv && python3 plot.py conv_exp.csv

@@ -21,7 +21,7 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 
 	unordered_map<int, GsopNode> nodesmap;
 	simulationData.aOnly = false;
-	simulationData.bEph = true;
+	//simulationData.bEph = true;
 	simulationData.neighborhoodInheritance = false; //V8 simulations are always without neighborhood inheritance
 
 	for(int i = 0; i < nodes.size(); i++){
@@ -40,7 +40,8 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			int aEphIndexBuilding = aEphIndex * simulationData.ephBuildingRatio;
 			int aEphIndexUsingShared = (aEphIndex * simulationData.ephReusingRatio) + aEphIndexBuilding;
 
-			if ((i < aEphIndex) && simulationData.isAProducer) {
+			//if ((i < aEphIndex) && simulationData.isAProducer) {
+			if ((i < aEphIndex) ) {
 				if(i < aEphIndexBuilding){
 					Eph *e = new Eph(simulationData.ephBonus);
 

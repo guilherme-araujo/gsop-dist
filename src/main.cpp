@@ -33,6 +33,7 @@ int main(int argc, char* argv[]){
 	double reuseBonusMultiplierB = 0.9;
 	double buildingBonusA = 0.99;
 	double buildingBonusB = 0.93;
+	double ephBirthGenerationChance = 0.0;
 	bool printPartials = false;
 
 	//Simulation values parsing from argv
@@ -55,6 +56,7 @@ int main(int argc, char* argv[]){
 	string arg_reuseBonusMultiplierB = "rBMB";
 	string arg_buildingBonusA = "bBA";
 	string arg_buildingBonusB = "bBB";
+	string arg_ephBirthGenerationChance = "ephBirthGenChance";
 	string arg_printPartials = "printPartials";
 
 	for(int i = 1; i < argc; i+=2){
@@ -94,6 +96,8 @@ int main(int argc, char* argv[]){
 			buildingBonusA = stod(argv[i+1]);
 		}else if (arg_buildingBonusB.compare(argv[i])==0){
 			buildingBonusB = stod(argv[i+1]);
+		}else if (arg_ephBirthGenerationChance.compare(argv[i])==0){
+			ephBirthGenerationChance = stod(argv[i+1]);
 		}else if (arg_printPartials.compare(argv[i])==0){
 			printPartials = stoi(argv[i+1]);
 		}else if (arg_behaviorHistory.compare(argv[i])==0){
@@ -119,7 +123,7 @@ int main(int argc, char* argv[]){
 	simulationData.ephStartRatio = ephStartRatio;
 	simulationData.ephBuildingRatio = ephBuildingRatio;
 	simulationData.ephReusingRatio = ephReusingRatio;
-	simulationData.ephBirthGenerationChance = 0.5;
+	simulationData.ephBirthGenerationChance = ephBirthGenerationChance;
 	simulationData.aOnly = false;
 	simulationData.neighborhoodInheritance = ni;
 	simulationData.birthRate = 1.04;

@@ -92,11 +92,28 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 
 		if(!simulationData.neighborhoodInheritance){
 			eph = (n->eph);
-			n->eph = NULL;
+			
 			n->coeff = sorteado->coeff;
 			n->type = sorteado->type;
 			n->fitness = 0;
-			n->behavior = SEARCHING;
+			if((simulationData.bEph || n->type=='A') && simulationData.ephBirthGenerationChance > 0.0){
+				uniform_real_distribution<> distr(0, 1);
+				double chosen = distr(*eng);
+				if(chosen < simulationData.ephBirthGenerationChance){
+					n->behavior = USING;
+					Eph *e = new Eph(simulationData.ephBonus);
+					e->time = simulationData.ephTime;
+					n->eph = e;
+					n->behaviorTimer = 0;
+				} else{
+					n->eph = NULL;
+					n->behavior = SEARCHING;
+				}
+			}else {
+				n->eph = NULL;
+				n->behavior = SEARCHING;
+			}
+			
 			n->behaviorTimer = simulationData.ephTime;
 
 		}else{
