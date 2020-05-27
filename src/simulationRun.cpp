@@ -83,11 +83,13 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//Type B initialization
 			nodes[i].type = 'B';
 			nodes[i].coeff = 1.0;
-			int bEphIndex = (simulationData.initialPop * abrate * simulationData.ephStartRatio)+(simulationData.initialPop * abrate);
+			int bEphIndex = simulationData.bEph*(simulationData.initialPop * abrate * simulationData.ephStartRatio)+(simulationData.initialPop * abrate);
 			//separates state using from producing
 			int bEphIndexBuilding = (bEphIndex - simulationData.initialPop * abrate) * simulationData.ephBuildingRatio + (simulationData.initialPop * abrate);
 			int bEphIndexUsingShared = ((bEphIndex - simulationData.initialPop * abrate) * simulationData.ephReusingRatio) + bEphIndexBuilding;
-			if (i < bEphIndex && simulationData.isBProducer) {
+			
+			//if (i < bEphIndex && simulationData.isBProducer) {
+			if (i < bEphIndex) {
 				if(i < bEphIndexBuilding){
 					Eph *e = new Eph(simulationData.ephBonus);
 
