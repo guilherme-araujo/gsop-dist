@@ -24,7 +24,7 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 	//simulationData.bEph = true;
 	simulationData.neighborhoodInheritance = false; //V8 simulations are always without neighborhood inheritance
 
-	for(int i = 0; i < nodes.size(); i++){
+	for(unsigned int i = 0; i < nodes.size(); i++){
 
 		double abrate = 0.5;
 		if(simulationData.aOnly){
@@ -35,10 +35,10 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//Type A initialization
 			nodes[i].type = 'A';
 			nodes[i].coeff = 1.0;
-			int aEphIndex = simulationData.initialPop * abrate * simulationData.ephStartRatio;
+			unsigned int aEphIndex = simulationData.initialPop * abrate * simulationData.ephStartRatio;
 			//separates state using from producing
-			int aEphIndexBuilding = aEphIndex * simulationData.ephBuildingRatio;
-			int aEphIndexUsingShared = (aEphIndex * simulationData.ephReusingRatio) + aEphIndexBuilding;
+			unsigned int aEphIndexBuilding = aEphIndex * simulationData.ephBuildingRatio;
+			unsigned int aEphIndexUsingShared = (aEphIndex * simulationData.ephReusingRatio) + aEphIndexBuilding;
 
 			//if ((i < aEphIndex) && simulationData.isAProducer) {
 			if ((i < aEphIndex) ) {
@@ -83,10 +83,10 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//Type B initialization
 			nodes[i].type = 'B';
 			nodes[i].coeff = 1.0;
-			int bEphIndex = simulationData.bEph*(simulationData.initialPop * abrate * simulationData.ephStartRatio)+(simulationData.initialPop * abrate);
+			unsigned int bEphIndex = simulationData.bEph*(simulationData.initialPop * abrate * simulationData.ephStartRatio)+(simulationData.initialPop * abrate);
 			//separates state using from producing
-			int bEphIndexBuilding = (bEphIndex - simulationData.initialPop * abrate) * simulationData.ephBuildingRatio + (simulationData.initialPop * abrate);
-			int bEphIndexUsingShared = ((bEphIndex - simulationData.initialPop * abrate) * simulationData.ephReusingRatio) + bEphIndexBuilding;
+			unsigned int bEphIndexBuilding = (bEphIndex - simulationData.initialPop * abrate) * simulationData.ephBuildingRatio + (simulationData.initialPop * abrate);
+			unsigned int bEphIndexUsingShared = ((bEphIndex - simulationData.initialPop * abrate) * simulationData.ephReusingRatio) + bEphIndexBuilding;
 			
 			//if (i < bEphIndex && simulationData.isBProducer) {
 			if (i < bEphIndex) {
@@ -129,8 +129,8 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 		nodesmap.insert(pair<int,GsopNode>(nodes[i].id,nodes[i]));
 	}
 
-	for(int i = 0; i < nodes.size(); i++){
-		for(int j = 0; j < nodes[i].neighbors.size(); j++){
+	for(unsigned int i = 0; i < nodes.size(); i++){
+		for(unsigned int j = 0; j < nodes[i].neighbors.size(); j++){
 			nodesmap[nodes[i].neighbors[j]].neighbors.push_back(nodes[i].id);
 		}
 	}
@@ -221,7 +221,7 @@ SimulationResults SimulationRun::runSimV7(SimulationData simulationData, int ti)
 
 	unordered_map<int, GsopNode> nodesmap;
 
-	for(int i = 0; i < nodes.size(); i++){
+	for(unsigned int i = 0; i < nodes.size(); i++){
 		double abrate = 0.5;
 		if(simulationData.aOnly){
 			abrate = 1;
@@ -255,8 +255,8 @@ SimulationResults SimulationRun::runSimV7(SimulationData simulationData, int ti)
 	}
 
 
-	for(int i = 0; i < nodes.size(); i++){
-		for(int j = 0; j < nodes[i].neighbors.size(); j++){
+	for(unsigned int i = 0; i < nodes.size(); i++){
+		for(unsigned int j = 0; j < nodes[i].neighbors.size(); j++){
 			nodesmap[nodes[i].neighbors[j]].neighbors.push_back(nodes[i].id);
 		}
 	}

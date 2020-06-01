@@ -11,6 +11,9 @@ void waitupdate(){
 	usleep(10000);
 }
 
+string str_nbuild = "-v";
+string nbuild = "20200529.001";
+
 int main(int argc, char* argv[]){
 
 	//Default simulation values
@@ -60,7 +63,10 @@ int main(int argc, char* argv[]){
 	string arg_printPartials = "printPartials";
 
 	for(int i = 1; i < argc; i+=2){
-		if(arg_samples.compare(argv[i])==0){
+		if(str_nbuild.compare(argv[i])==0){
+			cout<<nbuild<<endl;
+			return 0;
+		}else if(arg_samples.compare(argv[i])==0){
 			samples = stoi(argv[i+1]);
 		}else if(arg_cycles.compare(argv[i])==0){
 			cycles = stoi(argv[i+1]);

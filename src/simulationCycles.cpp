@@ -19,7 +19,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 	//all nodes key vector
 	vector<int> keys;
 	keys.resize(nodes->size());
-	for(int i = 0; i < nodes->size(); i++){
+	for(unsigned int i = 0; i < nodes->size(); i++){
 		keys[i] = i;
 	}
 	shuffle(keys.begin(), keys.end(), *eng);
@@ -31,7 +31,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 
 	//births
 	//keyi: current selected key index for death/birth
-	for(int keyi = 0; keyi < selectedKeys.size(); keyi++){
+	for(unsigned int keyi = 0; keyi < selectedKeys.size(); keyi++){
 
 		//key: current selected key
 		int key = selectedKeys[keyi];
@@ -40,12 +40,12 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 		GsopNode *n = &(*nodes)[key];
 
 		//selected type. saving for reuse of eph only by same type
-		char selectedType = n->type;
+		//char selectedType = n->type;
 
 		vector<double> roulette;
 		vector<int> neighborsList = n->neighbors;
 		double qtd = 0;
-		for(int i = 0; i < neighborsList.size(); i++){
+		for(unsigned int i = 0; i < neighborsList.size(); i++){
 			GsopNode neighbor = (*nodes)[neighborsList[i]];
 
 			//adjusted roulette amounts by node state			
@@ -123,7 +123,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 		//eph reuse section. ephs can be used by types A and B interchangeably
 		if(eph != NULL){
 			vector<int> currentKeys;
-			for(int i = 0; i < neighborsList.size(); i++){
+			for(unsigned int i = 0; i < neighborsList.size(); i++){
 				GsopNode neighbor = (*nodes)[neighborsList[i]];
 				if(neighbor.type=='A'){
 					if(simulationData.isAReuser){
@@ -139,7 +139,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 
 			shuffle(currentKeys.begin(), currentKeys.end(), *eng);
 			bool pegou = false;
-			for(int i = 0; i < currentKeys.size(); i++){
+			for(unsigned int i = 0; i < currentKeys.size(); i++){
 				int ckey = currentKeys[i];
 				if((*nodes)[ckey].behavior == SEARCHING){
 					(*nodes)[ckey].eph = eph;
@@ -154,7 +154,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 				currentKeys.clear();
 
 				//currentKeys = keys;
-				for(int i = 0; i < keys.size(); i++){
+				for(unsigned int i = 0; i < keys.size(); i++){
 					int ckey = keys[i];
 					if((*nodes)[ckey].type == 'A'){
 						if(simulationData.isAReuser){
@@ -169,7 +169,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 
 				if(currentKeys.size() > 0) shuffle(currentKeys.begin(), currentKeys.end(), *eng);
 
-				for(int i = 0; i < currentKeys.size(); i++){
+				for(unsigned int i = 0; i < currentKeys.size(); i++){
 					int ckey = currentKeys[i];
 					if((*nodes)[ckey].behavior == SEARCHING){
 						(*nodes)[ckey].eph = eph;
@@ -188,7 +188,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 
 
 	//eph times update
-	for(int i = 0; i < keys.size(); i++){
+	for(unsigned int i = 0; i < keys.size(); i++){
 		int keyi = keys[i];
 		GsopNode *n = &(*nodes)[keyi];
 		if(n->eph != NULL){
@@ -214,7 +214,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 	int ceph = 0;
 	int cephshared = 0;
 	//behavior update
-	for(int i = 0; i < keys.size(); i++){
+	for(unsigned int i = 0; i < keys.size(); i++){
 		int keyi = keys[i];
 		GsopNode *n = &(*nodes)[keyi];
 
@@ -290,7 +290,7 @@ void SimulationCycles::cycleV7(unordered_map<int,GsopNode> *nodes, SimulationDat
 	vector<int> selectedKeysDeath;
 	vector<int> keys;
 	keys.resize(nodes->size());
-	for(int i = 0; i < nodes->size(); i++){
+	for(unsigned int i = 0; i < nodes->size(); i++){
 		keys[i] = i;
 	}
 	shuffle(keys.begin(), keys.end(), *eng);
@@ -308,14 +308,14 @@ void SimulationCycles::cycleV7(unordered_map<int,GsopNode> *nodes, SimulationDat
 	}
 
 	//births
-	for(int keyi = 0; keyi < selectedKeys.size(); keyi++){
+	for(unsigned int keyi = 0; keyi < selectedKeys.size(); keyi++){
 		int key = selectedKeys[keyi];
 		GsopNode *n = &(*nodes)[key];
 
 		vector<int> roulette;
 		vector<int> neighborsList = n->neighbors;
 
-		for(int i = 0; i < neighborsList.size(); i++){
+		for(unsigned int i = 0; i < neighborsList.size(); i++){
 			GsopNode neighbor = (*nodes)[neighborsList[i]];
 
 			int qtd = (int) (neighbor.getCoeff()*100);
@@ -362,7 +362,7 @@ void SimulationCycles::cycleV7(unordered_map<int,GsopNode> *nodes, SimulationDat
 			eph = dyingNode->eph;
 
 			//remove dying node from neighbors' neighborhoods
-			for(int i = 0; i < dyingNode->neighbors.size(); i++){
+			for(unsigned int i = 0; i < dyingNode->neighbors.size(); i++){
 				GsopNode *neighbor = &(*nodes)[dyingNode->neighbors[i]];
 
 				vector<int> updatedNList;
@@ -400,7 +400,7 @@ void SimulationCycles::cycleV7(unordered_map<int,GsopNode> *nodes, SimulationDat
 				}
 			}
 
-			for(int i = 0 ;i < newNode.neighbors.size(); i++){
+			for(unsigned int i = 0 ;i < newNode.neighbors.size(); i++){
 				unordered_map<int,GsopNode>::iterator it = (*nodes).find(newNode.neighbors[i]);
 				if(it != (*nodes).end()){
 
@@ -413,13 +413,13 @@ void SimulationCycles::cycleV7(unordered_map<int,GsopNode> *nodes, SimulationDat
 		}
 
 		vector<int> currentKeys;
-		for(int i = 0; i < neighborsList.size(); i++){
+		for(unsigned int i = 0; i < neighborsList.size(); i++){
 			currentKeys.push_back(neighborsList[i]);
 		}
 
 		shuffle(currentKeys.begin(), currentKeys.end(), *eng);
 		bool pegou = false;
-		for(int i = 0; i < currentKeys.size(); i++){
+		for(unsigned int i = 0; i < currentKeys.size(); i++){
 			int ckey = currentKeys[i];
 			if((*nodes)[ckey].eph ==NULL && (*nodes)[ckey].type =='A'){
 				(*nodes)[ckey].eph = eph;
@@ -433,7 +433,7 @@ void SimulationCycles::cycleV7(unordered_map<int,GsopNode> *nodes, SimulationDat
 
 			currentKeys = keys;
 			shuffle(currentKeys.begin(), currentKeys.end(), *eng);
-			for(int i = 0; i < currentKeys.size(); i++){
+			for(unsigned int i = 0; i < currentKeys.size(); i++){
 				int ckey = currentKeys[i];
 				if((*nodes)[ckey].eph ==NULL && (*nodes)[ckey].type =='A'){
 					(*nodes)[ckey].eph = eph;
@@ -447,7 +447,7 @@ void SimulationCycles::cycleV7(unordered_map<int,GsopNode> *nodes, SimulationDat
 
 	}
 
-	for(int i = 0; i < keys.size(); i++){
+	for(unsigned int i = 0; i < keys.size(); i++){
 		int keyi = keys[i];
 		GsopNode *n = &(*nodes)[keyi];
 		if(n->eph != NULL){

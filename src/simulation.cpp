@@ -18,13 +18,13 @@ bool Simulation::simulationV8(SimulationData simulationData, int ti){
 		cout<<simulationResults.behaviorHistoryStr;
 	}
 	if(simulationData.ephPopHistory){
-		for(int i = 0; i < simulationResults.typeAPopHistory.size(); i++){
+		for(unsigned int i = 0; i < simulationResults.typeAPopHistory.size(); i++){
 			cout<<i<<";"<<simulationResults.typeAPopHistory[i]<<";"<<simulationResults.typeBPopHistory[i]<<";"<<simulationResults.ephPopHistory[i]<<";"<<simulationResults.avgDegree[i]<<endl;
 		}
 	}else{
 
 		if(simulationData.printPartials){
-			for(int i = 500; i <= simulationResults.typeAPopHistory.size(); i+=500){
+			for(unsigned int i = 500; i <= simulationResults.typeAPopHistory.size(); i+=500){
 				cout<<"partial;"<<i<<";"<<simulationResults.typeAPopHistory[i-1]<<";"<<simulationResults.typeBPopHistory[i-1]<<";"<<simulationResults.ephPopHistory[i-1]<<";"<<simulationData.sampleid<<endl;
 			}
 		}
@@ -45,7 +45,7 @@ bool Simulation::simulationV7(SimulationData simulationData, int ti){
 
 	out.lock();
 	if(simulationData.ephPopHistory){
-		for(int i = 0; i < simulationResults.typeAPopHistory.size(); i++){
+		for(unsigned int i = 0; i < simulationResults.typeAPopHistory.size(); i++){
 			cout<<i<<";"<<simulationResults.typeAPopHistory[i]<<";"<<simulationResults.typeBPopHistory[i]<<";"<<simulationResults.ephPopHistory[i]<<";"<<simulationResults.avgDegree[i]<<endl;
 		}
 	}else{
