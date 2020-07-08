@@ -32,7 +32,7 @@ Common parameters for all simulation sets. If not set, it uses the default value
 Values for individual simulations
 
 ephBonus | folder 
--|-|-
+-|-
  0.00 | b000
  0.01 | b001
  0.02 | b002
