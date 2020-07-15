@@ -38,6 +38,8 @@ int main(int argc, char* argv[]){
 	double buildingBonusB = 0.93;
 	double ephBirthGenerationChance = 0.0;
 	bool printPartials = false;
+	double cheaterChanceA = 0.0;
+	double cheaterChanceB = 0.0;
 
 	//Simulation values parsing from argv
 	string arg_samples = "samples";
@@ -61,6 +63,8 @@ int main(int argc, char* argv[]){
 	string arg_buildingBonusB = "bBB";
 	string arg_ephBirthGenerationChance = "ephBirthGenChance";
 	string arg_printPartials = "printPartials";
+	string arg_cheaterChanceA = "cheaterA";
+	string arg_cheaterChanceB = "cheaterB";
 
 	for(int i = 1; i < argc; i+=2){
 		if(str_nbuild.compare(argv[i])==0){
@@ -106,6 +110,10 @@ int main(int argc, char* argv[]){
 			ephBirthGenerationChance = stod(argv[i+1]);
 		}else if (arg_printPartials.compare(argv[i])==0){
 			printPartials = stoi(argv[i+1]);
+		}else if (arg_cheaterChanceA.compare(argv[i])==0){
+			cheaterChanceA = stod(argv[i+1]);
+		}else if (arg_cheaterChanceB.compare(argv[i])==0){
+			cheaterChanceB = stod(argv[i+1]);
 		}else if (arg_behaviorHistory.compare(argv[i])==0){
 			behaviorHistory = stoi(argv[i+1]);
 		}else{
@@ -149,6 +157,8 @@ int main(int argc, char* argv[]){
 	simulationData.buildingBonusB = buildingBonusB;
 	simulationData.printPartials = printPartials;
 	simulationData.behaviorHistory = behaviorHistory;
+	simulationData.cheaterChanceA = cheaterChanceA;
+	simulationData.cheaterChanceB = cheaterChanceB;
 
 	//Launch simulation threads according to number of samples
 	vector<thread> tl;

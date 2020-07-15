@@ -37,6 +37,8 @@ class SimulationData{
 	bool isAReuser;
 	bool isBReuser;
 	bool bEph;
+	double cheaterChanceA;
+	double cheaterChanceB;
 	bool printPartials;
 
 	int sampleid;

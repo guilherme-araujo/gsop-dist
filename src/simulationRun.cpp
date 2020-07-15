@@ -35,6 +35,13 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//Type A initialization
 			nodes[i].type = 'A';
 			nodes[i].coeff = 1.0;
+			uniform_real_distribution<> distr(0, 1);
+			double cheaterChance = distr(eng);
+			if(cheaterChance < simulationData.cheaterChanceA){
+				nodes[i].cheater = true;
+			}else{
+				nodes[i].cheater = false;
+			}
 			unsigned int aEphIndex = simulationData.initialPop * abrate * simulationData.ephStartRatio;
 			//separates state using from producing
 			unsigned int aEphIndexBuilding = aEphIndex * simulationData.ephBuildingRatio;
@@ -83,6 +90,13 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//Type B initialization
 			nodes[i].type = 'B';
 			nodes[i].coeff = 1.0;
+			uniform_real_distribution<> distr(0, 1);
+			double cheaterChance = distr(eng);
+			if(cheaterChance < simulationData.cheaterChanceB){
+				nodes[i].cheater = true;
+			}else{
+				nodes[i].cheater = false;
+			}
 			unsigned int bEphIndex = simulationData.bEph*(simulationData.initialPop * abrate * simulationData.ephStartRatio)+(simulationData.initialPop * abrate);
 			//separates state using from producing
 			unsigned int bEphIndexBuilding = (bEphIndex - simulationData.initialPop * abrate) * simulationData.ephBuildingRatio + (simulationData.initialPop * abrate);
