@@ -35,13 +35,7 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//Type A initialization
 			nodes[i].type = 'A';
 			nodes[i].coeff = 1.0;
-			uniform_real_distribution<> distr(0, 1);
-			double cheaterChance = distr(eng);
-			if(cheaterChance < simulationData.cheaterChanceA){
-				nodes[i].cheater = true;
-			}else{
-				nodes[i].cheater = false;
-			}
+			
 			unsigned int aEphIndex = simulationData.initialPop * abrate * simulationData.ephStartRatio;
 			//separates state using from producing
 			unsigned int aEphIndexBuilding = aEphIndex * simulationData.ephBuildingRatio;
@@ -50,15 +44,11 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//if ((i < aEphIndex) && simulationData.isAProducer) {
 			if ((i < aEphIndex) ) {
 				if(i < aEphIndexBuilding){
-					Eph *e = new Eph(simulationData.ephBonus);
-
-					//randomize eph time
-					uniform_int_distribution<> distr_eph(1, simulationData.ephTime);
-					int eTime = distr_eph(eng);
-					e->time = eTime;
-
-					nodes[i].eph = e;
+					
+					nodes[i].eph = NULL;
 					nodes[i].behavior = PRODUCING;
+					nodes[i].cheater = false;
+					
 				} else if(i < aEphIndexUsingShared){
 					Eph *e = new Eph(simulationData.ephBonus);
 
@@ -69,13 +59,36 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 
 					nodes[i].eph = e;
 					nodes[i].behavior = USING_SHARED;
+					uniform_real_distribution<> distr(0, 1);
+					double cheaterChance = distr(eng);
+					if(cheaterChance < simulationData.cheaterChanceA){
+						nodes[i].cheater = true;
+					}else{
+						nodes[i].cheater = false;
+					}
 				} else{
-					nodes[i].eph = NULL;
+					Eph *e = new Eph(simulationData.ephBonus);
+
+					//randomize eph time
+					uniform_int_distribution<> distr_eph(1, simulationData.ephTime);
+					int eTime = distr_eph(eng);
+					e->time = eTime;
+
+					nodes[i].eph = e;
+					
 					nodes[i].behavior = USING;
+					nodes[i].cheater = false;
 				}
 			}else{
 				nodes[i].eph = NULL;
 				nodes[i].behavior = SEARCHING;
+				uniform_real_distribution<> distr(0, 1);
+				double cheaterChance = distr(eng);
+				if(cheaterChance < simulationData.cheaterChanceA){
+					nodes[i].cheater = true;
+				}else{
+					nodes[i].cheater = false;
+				}
 			}
 
 			if(nodes[i].behavior != USING && nodes[i].behavior != USING_SHARED){
@@ -90,13 +103,7 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//Type B initialization
 			nodes[i].type = 'B';
 			nodes[i].coeff = 1.0;
-			uniform_real_distribution<> distr(0, 1);
-			double cheaterChance = distr(eng);
-			if(cheaterChance < simulationData.cheaterChanceB){
-				nodes[i].cheater = true;
-			}else{
-				nodes[i].cheater = false;
-			}
+			
 			unsigned int bEphIndex = simulationData.bEph*(simulationData.initialPop * abrate * simulationData.ephStartRatio)+(simulationData.initialPop * abrate);
 			//separates state using from producing
 			unsigned int bEphIndexBuilding = (bEphIndex - simulationData.initialPop * abrate) * simulationData.ephBuildingRatio + (simulationData.initialPop * abrate);
@@ -105,15 +112,18 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//if (i < bEphIndex && simulationData.isBProducer) {
 			if (i < bEphIndex) {
 				if(i < bEphIndexBuilding){
-					Eph *e = new Eph(simulationData.ephBonus);
 
-					//randomize eph time
-					uniform_int_distribution<> distr_eph(1, simulationData.ephTime);
-					int eTime = distr_eph(eng);
-					e->time = eTime;
-					nodes[i].eph = e;
+					nodes[i].eph = NULL;
 					nodes[i].behavior = PRODUCING;
+					nodes[i].cheater = false;
 				}else if(i < bEphIndexUsingShared){
+					uniform_real_distribution<> distr(0, 1);
+					double cheaterChance = distr(eng);
+					if(cheaterChance < simulationData.cheaterChanceB){
+						nodes[i].cheater = true;
+					}else{
+						nodes[i].cheater = false;
+					}
 					Eph *e = new Eph(simulationData.ephBonus);
 
 					//randomize eph time
@@ -123,11 +133,27 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 					nodes[i].eph = e;
 					nodes[i].behavior = USING_SHARED;
 				}else{
-					nodes[i].eph = NULL;
+					
+					Eph *e = new Eph(simulationData.ephBonus);
+
+					//randomize eph time
+					uniform_int_distribution<> distr_eph(1, simulationData.ephTime);
+					int eTime = distr_eph(eng);
+					e->time = eTime;
+					nodes[i].eph = e;
 					nodes[i].behavior = USING;
+					nodes[i].cheater = false;
 				}
 			} else{
 				nodes[i].eph = NULL;
+				uniform_real_distribution<> distr(0, 1);
+				double cheaterChance = distr(eng);
+				if(cheaterChance < simulationData.cheaterChanceB){
+					nodes[i].cheater = true;
+				}else{
+					nodes[i].cheater = false;
+				}
+				
 				nodes[i].behavior = SEARCHING;
 			}
 
