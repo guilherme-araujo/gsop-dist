@@ -96,6 +96,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 			n->coeff = sorteado->coeff;
 			n->type = sorteado->type;
 			n->fitness = 0;
+			n->cheater = sorteado->cheater;
 			if((simulationData.bEph || n->type=='A') && simulationData.ephBirthGenerationChance > 0.0){
 				uniform_real_distribution<> distr(0, 1);
 				double chosen = distr(*eng);
@@ -114,7 +115,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 				n->behavior = SEARCHING;
 			}
 
-			if(n->type == 'A' && simulationData.cheaterChanceA > 0){
+			/*if(n->type == 'A' && simulationData.cheaterChanceA > 0){
 				uniform_real_distribution<> distr(0, 1);
 				double cheaterChance = distr(*eng);
 				if(cheaterChance < simulationData.cheaterChanceB){
@@ -132,7 +133,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 				}
 			}else{
 				n->cheater = false;
-			}
+			}*/
 			
 			n->behaviorTimer = simulationData.ephTime;
 
