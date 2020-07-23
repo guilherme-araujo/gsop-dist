@@ -31,7 +31,7 @@ bool Simulation::simulationV8(SimulationData simulationData, int ti){
 
 		int fc = simulationResults.fixationCycles;
 		int numCycles = simulationResults.typeAPopHistory.size()-1;
-		cout<<simulationResults.typeAPopHistory[numCycles]<<";"<<simulationResults.typeBPopHistory[numCycles]<<";"<<fc<<";"<<simulationResults.elapsedSeconds<<";"<<simulationData.sampleid<<";"<<simulationResults.typeAWithEph<<";"<<simulationResults.typeBWithEph<<endl;
+		cout<<simulationResults.typeAPopHistory[numCycles]<<";"<<simulationResults.typeBPopHistory[numCycles]<<";"<<fc<<";"<<simulationResults.elapsedSeconds<<";"<<simulationData.sampleid<<";"<<simulationResults.typeAWithEph<<";"<<simulationResults.typeBWithEph<<";"<<simulationResults.typeACheater<<";"<<simulationResults.typeBCheater <<endl;
 	}
 
 	out.unlock();

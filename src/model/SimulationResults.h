@@ -14,6 +14,8 @@ class SimulationResults{
 	std::vector<int> avgDegree;
 	int typeAWithEph;
 	int typeBWithEph;
+	int typeACheater;
+	int typeBCheater;
 	std::vector<double> partialFitnessAvg;
 	std::vector<GsopNode> finalNodes;
 	double elapsedSeconds;

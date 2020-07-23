@@ -222,20 +222,30 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 	}
 
 	int typeACount = 0;
+	int typeACheaterCount = 0;
 	int typeBCount = 0;
+	int typeBCheaterCount = 0;
 
 	for(unordered_map<int, GsopNode>::iterator j = nodesmap.begin(); j != nodesmap.end(); ++j){
 		if(j->second.eph != NULL){
 			if(j->second.type == 'A'){
 				typeACount++;
+				if(j->second.cheater){
+					typeACheaterCount++;
+				}
 			}else{
 				typeBCount++;
+				if(j->second.cheater){
+					typeBCheaterCount++;
+				}
 			}
 		}
 	}
 
 	simulationResults.typeAWithEph = typeACount;
 	simulationResults.typeBWithEph = typeBCount;
+	simulationResults.typeACheater = typeACheaterCount;
+	simulationResults.typeBCheater = typeBCheaterCount;
 
 	clock_t end = clock();
 	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
