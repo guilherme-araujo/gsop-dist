@@ -183,7 +183,9 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 
 		int ephCount = 0;
 		int typeACount = 0;
+		int typeACheaterCount = 0;
 		int typeBCount = 0;
+		int typeBCheaterCount = 0;
 
 		vector<GsopNode> nodeslist;
 
@@ -194,8 +196,14 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			}
 			if(j->second.type == 'A'){
 				typeACount++;
+				if(j->second.cheater){
+					typeACheaterCount++;
+				}
 			}else{
 				typeBCount++;
+				if(j->second.cheater){
+					typeBCheaterCount++;
+				}
 			}
 			degreeCount += j->second.neighbors.size();
 
@@ -210,14 +218,27 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 		simulationResults.avgDegree.push_back(degreeCount/nodes.size());
 		simulationResults.ephPopHistory.push_back(ephCount);
 		simulationResults.typeAPopHistory.push_back(typeACount);
+		simulationResults.typeACheaterHistory.push_back(typeACheaterCount);
 		simulationResults.typeBPopHistory.push_back(typeBCount);
+		simulationResults.typeBCheaterHistory.push_back(typeBCheaterCount);
 
-		if(typeACount == 0 || typeBCount == 0){
+		/*if(typeACount == 0 || typeBCount == 0){
 			simulationResults.fixationCycles = i;
 			break;
+		}*/
+		if(typeACount == 0){
+			if(typeBCheaterCount == simulationData.initialPop || typeBCheaterCount == 0){
+				simulationResults.fixationCycles = i;
+				break;
+			}
 		}
 
-		
+		if(typeBCount == 0){
+			if(typeACheaterCount == simulationData.initialPop || typeACheaterCount == 0){
+				simulationResults.fixationCycles = i;
+				break;
+			}
+		}
 
 	}
 
