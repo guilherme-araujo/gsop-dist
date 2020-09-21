@@ -35,6 +35,7 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//Type A initialization
 			nodes[i].type = 'A';
 			nodes[i].coeff = 1.0;
+			
 			unsigned int aEphIndex = simulationData.initialPop * abrate * simulationData.ephStartRatio;
 			//separates state using from producing
 			unsigned int aEphIndexBuilding = aEphIndex * simulationData.ephBuildingRatio;
@@ -43,15 +44,11 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//if ((i < aEphIndex) && simulationData.isAProducer) {
 			if ((i < aEphIndex) ) {
 				if(i < aEphIndexBuilding){
-					Eph *e = new Eph(simulationData.ephBonus);
-
-					//randomize eph time
-					uniform_int_distribution<> distr_eph(1, simulationData.ephTime);
-					int eTime = distr_eph(eng);
-					e->time = eTime;
-
-					nodes[i].eph = e;
+					
+					nodes[i].eph = NULL;
 					nodes[i].behavior = PRODUCING;
+					nodes[i].cheater = false;
+					
 				} else if(i < aEphIndexUsingShared){
 					Eph *e = new Eph(simulationData.ephBonus);
 
@@ -62,13 +59,36 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 
 					nodes[i].eph = e;
 					nodes[i].behavior = USING_SHARED;
+					uniform_real_distribution<> distr(0, 1);
+					double cheaterChance = distr(eng);
+					if(cheaterChance < simulationData.cheaterChanceA){
+						nodes[i].cheater = true;
+					}else{
+						nodes[i].cheater = false;
+					}
 				} else{
-					nodes[i].eph = NULL;
+					Eph *e = new Eph(simulationData.ephBonus);
+
+					//randomize eph time
+					uniform_int_distribution<> distr_eph(1, simulationData.ephTime);
+					int eTime = distr_eph(eng);
+					e->time = eTime;
+
+					nodes[i].eph = e;
+					
 					nodes[i].behavior = USING;
+					nodes[i].cheater = false;
 				}
 			}else{
 				nodes[i].eph = NULL;
 				nodes[i].behavior = SEARCHING;
+				uniform_real_distribution<> distr(0, 1);
+				double cheaterChance = distr(eng);
+				if(cheaterChance < simulationData.cheaterChanceA){
+					nodes[i].cheater = true;
+				}else{
+					nodes[i].cheater = false;
+				}
 			}
 
 			if(nodes[i].behavior != USING && nodes[i].behavior != USING_SHARED){
@@ -83,6 +103,7 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//Type B initialization
 			nodes[i].type = 'B';
 			nodes[i].coeff = 1.0;
+			
 			unsigned int bEphIndex = simulationData.bEph*(simulationData.initialPop * abrate * simulationData.ephStartRatio)+(simulationData.initialPop * abrate);
 			//separates state using from producing
 			unsigned int bEphIndexBuilding = (bEphIndex - simulationData.initialPop * abrate) * simulationData.ephBuildingRatio + (simulationData.initialPop * abrate);
@@ -91,15 +112,18 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			//if (i < bEphIndex && simulationData.isBProducer) {
 			if (i < bEphIndex) {
 				if(i < bEphIndexBuilding){
-					Eph *e = new Eph(simulationData.ephBonus);
 
-					//randomize eph time
-					uniform_int_distribution<> distr_eph(1, simulationData.ephTime);
-					int eTime = distr_eph(eng);
-					e->time = eTime;
-					nodes[i].eph = e;
+					nodes[i].eph = NULL;
 					nodes[i].behavior = PRODUCING;
+					nodes[i].cheater = false;
 				}else if(i < bEphIndexUsingShared){
+					uniform_real_distribution<> distr(0, 1);
+					double cheaterChance = distr(eng);
+					if(cheaterChance < simulationData.cheaterChanceB){
+						nodes[i].cheater = true;
+					}else{
+						nodes[i].cheater = false;
+					}
 					Eph *e = new Eph(simulationData.ephBonus);
 
 					//randomize eph time
@@ -109,11 +133,27 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 					nodes[i].eph = e;
 					nodes[i].behavior = USING_SHARED;
 				}else{
-					nodes[i].eph = NULL;
+					
+					Eph *e = new Eph(simulationData.ephBonus);
+
+					//randomize eph time
+					uniform_int_distribution<> distr_eph(1, simulationData.ephTime);
+					int eTime = distr_eph(eng);
+					e->time = eTime;
+					nodes[i].eph = e;
 					nodes[i].behavior = USING;
+					nodes[i].cheater = false;
 				}
 			} else{
 				nodes[i].eph = NULL;
+				uniform_real_distribution<> distr(0, 1);
+				double cheaterChance = distr(eng);
+				if(cheaterChance < simulationData.cheaterChanceB){
+					nodes[i].cheater = true;
+				}else{
+					nodes[i].cheater = false;
+				}
+				
 				nodes[i].behavior = SEARCHING;
 			}
 
@@ -143,7 +183,9 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 
 		int ephCount = 0;
 		int typeACount = 0;
+		int typeACheaterCount = 0;
 		int typeBCount = 0;
+		int typeBCheaterCount = 0;
 
 		vector<GsopNode> nodeslist;
 
@@ -154,8 +196,14 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 			}
 			if(j->second.type == 'A'){
 				typeACount++;
+				if(j->second.cheater){
+					typeACheaterCount++;
+				}
 			}else{
 				typeBCount++;
+				if(j->second.cheater){
+					typeBCheaterCount++;
+				}
 			}
 			degreeCount += j->second.neighbors.size();
 
@@ -170,32 +218,55 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 		simulationResults.avgDegree.push_back(degreeCount/nodes.size());
 		simulationResults.ephPopHistory.push_back(ephCount);
 		simulationResults.typeAPopHistory.push_back(typeACount);
+		simulationResults.typeACheaterHistory.push_back(typeACheaterCount);
 		simulationResults.typeBPopHistory.push_back(typeBCount);
+		simulationResults.typeBCheaterHistory.push_back(typeBCheaterCount);
 
-		if(typeACount == 0 || typeBCount == 0){
+		/*if(typeACount == 0 || typeBCount == 0){
 			simulationResults.fixationCycles = i;
 			break;
+		}*/
+		if(typeACount == 0){
+			if(typeBCheaterCount == simulationData.initialPop || typeBCheaterCount == 0){
+				simulationResults.fixationCycles = i;
+				break;
+			}
 		}
 
-		
+		if(typeBCount == 0){
+			if(typeACheaterCount == simulationData.initialPop || typeACheaterCount == 0){
+				simulationResults.fixationCycles = i;
+				break;
+			}
+		}
 
 	}
 
 	int typeACount = 0;
+	int typeACheaterCount = 0;
 	int typeBCount = 0;
+	int typeBCheaterCount = 0;
 
 	for(unordered_map<int, GsopNode>::iterator j = nodesmap.begin(); j != nodesmap.end(); ++j){
 		if(j->second.eph != NULL){
 			if(j->second.type == 'A'){
 				typeACount++;
+				if(j->second.cheater){
+					typeACheaterCount++;
+				}
 			}else{
 				typeBCount++;
+				if(j->second.cheater){
+					typeBCheaterCount++;
+				}
 			}
 		}
 	}
 
 	simulationResults.typeAWithEph = typeACount;
 	simulationResults.typeBWithEph = typeBCount;
+	simulationResults.typeACheater = typeACheaterCount;
+	simulationResults.typeBCheater = typeBCheaterCount;
 
 	clock_t end = clock();
 	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;

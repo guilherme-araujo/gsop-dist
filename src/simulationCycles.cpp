@@ -96,6 +96,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 			n->coeff = sorteado->coeff;
 			n->type = sorteado->type;
 			n->fitness = 0;
+			n->cheater = sorteado->cheater;
 			if((simulationData.bEph || n->type=='A') && simulationData.ephBirthGenerationChance > 0.0){
 				uniform_real_distribution<> distr(0, 1);
 				double chosen = distr(*eng);
@@ -113,6 +114,26 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 				n->eph = NULL;
 				n->behavior = SEARCHING;
 			}
+
+			/*if(n->type == 'A' && simulationData.cheaterChanceA > 0){
+				uniform_real_distribution<> distr(0, 1);
+				double cheaterChance = distr(*eng);
+				if(cheaterChance < simulationData.cheaterChanceB){
+					n->cheater = true;
+				}else{
+					n->cheater = false;
+				}
+			}else if(n->type == 'B' && simulationData.cheaterChanceB > 0){
+				uniform_real_distribution<> distr(0, 1);
+				double cheaterChance = distr(*eng);
+				if(cheaterChance < simulationData.cheaterChanceB){
+					n->cheater = true;
+				}else{
+					n->cheater = false;
+				}
+			}else{
+				n->cheater = false;
+			}*/
 			
 			n->behaviorTimer = simulationData.ephTime;
 
@@ -213,6 +234,16 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 	int cusingsharedB = 0;
 	int ceph = 0;
 	int cephshared = 0;
+
+	//cheater count
+	int chSearchingA = 0;
+	int chSearchingB = 0;
+	int chProducingA = 0;
+	int chProducingB = 0;
+	int chUsingA = 0;
+	int chUsingB = 0;
+	int chUsingSharedA = 0;
+	int chUsingSharedB = 0;
 	//behavior update
 	for(unsigned int i = 0; i < keys.size(); i++){
 		int keyi = keys[i];
@@ -221,25 +252,65 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 		if(simulationData.behaviorHistory){
 			switch(n->behavior){
 				case SEARCHING:
-					if(n->type=='A')
+					if(n->type=='A'){
 						csearchingA++;
-					else csearchingB++;
+						if(n->cheater){
+							chSearchingA++;
+						}
+					}
+					else {
+						csearchingB++;
+						if(n->cheater){
+							chSearchingB++;
+						}
+					}
 					break;
 				case PRODUCING:
-					if(n->type=='A')
+					if(n->type=='A'){
 						cproducingA++;
-					else cproducingB++;
+						if(n->cheater){
+							chProducingA++;
+						}
+					}
+						
+					else {
+						cproducingB++;
+						if(n->cheater){
+							chProducingB++;
+						}
+
+					} 
 					break;
 				case USING:
-					if(n->type=='A')
+					if(n->type=='A'){
 						cusingA++;
-					else cusingB++;
+						if(n->cheater){
+							chUsingA++;
+						}
+					}
+						
+					else {
+						cusingB++;
+						if(n->cheater){
+							chUsingB++;
+						}
+					} 
 					if(n->eph != NULL) ceph++;
 					break;
 				case USING_SHARED:
-					if(n->type=='A')
+					if(n->type=='A') {
 						cusingsharedA++;
-					else cusingsharedB++;
+						if(n->cheater){
+							chUsingSharedA++;
+						}
+					}
+						
+					else {
+						cusingsharedB++;
+						if(n->cheater){
+							chUsingSharedB++;
+						}
+					} 
 					if(n->eph != NULL) cephshared++;
 					break;
 			}
@@ -247,7 +318,8 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 
 		if(n->behaviorTimer == 1){
 			//cout<<"time "<<n->behavior<<endl;
-			if(n->behavior == SEARCHING){
+			if(n->behavior == SEARCHING && !n->cheater){
+				
 				if(n->type=='A'){
 					if(simulationData.isAProducer){
 						n->behavior = PRODUCING;
@@ -276,7 +348,9 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 	if(simulationData.behaviorHistory){
 		*behaviorSnapshot = to_string(csearchingA)+';'+to_string(csearchingB)+';'+to_string(cproducingA)+';'+
 		to_string(cproducingB)+';'+to_string(cusingA)+';'+to_string(cusingB)+';'+to_string(cusingsharedA)+';'+
-		to_string(cusingsharedB)+";\n";
+		to_string(cusingsharedB)+";cheaters;"+to_string(chSearchingA)+';'+to_string(chSearchingB)+';'+to_string(chProducingA)+';'+
+		to_string(chProducingB)+';'+to_string(chUsingA)+';'+to_string(chUsingB)+';'+to_string(chUsingSharedA)+';'+
+		to_string(chUsingSharedB)+ "\n";
 
 	}
 }

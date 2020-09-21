@@ -10,10 +10,14 @@ class SimulationResults{
 
 	std::vector<int> typeAPopHistory;
 	std::vector<int> typeBPopHistory;
+	std::vector<int> typeACheaterHistory;
+	std::vector<int> typeBCheaterHistory;
 	std::vector<int> ephPopHistory;
 	std::vector<int> avgDegree;
 	int typeAWithEph;
 	int typeBWithEph;
+	int typeACheater;
+	int typeBCheater;
 	std::vector<double> partialFitnessAvg;
 	std::vector<GsopNode> finalNodes;
 	double elapsedSeconds;

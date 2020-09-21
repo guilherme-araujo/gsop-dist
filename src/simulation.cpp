@@ -25,13 +25,13 @@ bool Simulation::simulationV8(SimulationData simulationData, int ti){
 
 		if(simulationData.printPartials){
 			for(unsigned int i = 500; i <= simulationResults.typeAPopHistory.size(); i+=500){
-				cout<<"partial;"<<i<<";"<<simulationResults.typeAPopHistory[i-1]<<";"<<simulationResults.typeBPopHistory[i-1]<<";"<<simulationResults.ephPopHistory[i-1]<<";"<<simulationData.sampleid<<endl;
+				cout<<"partial;"<<i<<";"<<simulationResults.typeAPopHistory[i-1]<<";"<<simulationResults.typeBPopHistory[i-1]<<";"<<simulationResults.ephPopHistory[i-1]<<";"<<simulationData.sampleid<<";"<<simulationResults.typeACheaterHistory[i-1]<<";"<<simulationResults.typeBCheaterHistory[i-1]<<endl;
 			}
 		}
 
 		int fc = simulationResults.fixationCycles;
 		int numCycles = simulationResults.typeAPopHistory.size()-1;
-		cout<<simulationResults.typeAPopHistory[numCycles]<<";"<<simulationResults.typeBPopHistory[numCycles]<<";"<<fc<<";"<<simulationResults.elapsedSeconds<<";"<<simulationData.sampleid<<";"<<simulationResults.typeAWithEph<<";"<<simulationResults.typeBWithEph<<endl;
+		cout<<simulationResults.typeAPopHistory[numCycles]<<";"<<simulationResults.typeBPopHistory[numCycles]<<";"<<fc<<";"<<simulationResults.elapsedSeconds<<";"<<simulationData.sampleid<<";"<<simulationResults.typeAWithEph<<";"<<simulationResults.typeBWithEph<<";"<<simulationResults.typeACheaterHistory[numCycles]<<";"<<simulationResults.typeBCheaterHistory[numCycles]<<endl;
 	}
 
 	out.unlock();

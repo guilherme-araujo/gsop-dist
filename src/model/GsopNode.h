@@ -27,6 +27,7 @@ public:
     Eph *eph;
     int behaviorTimer;
     NodeState behavior;
+    bool cheater;
 
     std::vector<int> neighbors;
 
