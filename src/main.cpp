@@ -40,6 +40,7 @@ int main(int argc, char* argv[]){
 	bool printPartials = false;
 	double cheaterChanceA = 0.0;
 	double cheaterChanceB = 0.0;
+	double deathRate = 1.04;
 
 	//Simulation values parsing from argv
 	string arg_samples = "samples";
@@ -65,6 +66,7 @@ int main(int argc, char* argv[]){
 	string arg_printPartials = "printPartials";
 	string arg_cheaterChanceA = "cheaterA";
 	string arg_cheaterChanceB = "cheaterB";
+	string arg_deathRate = "deathRate";
 
 	for(int i = 1; i < argc; i+=2){
 		if(str_nbuild.compare(argv[i])==0){
@@ -116,6 +118,8 @@ int main(int argc, char* argv[]){
 			cheaterChanceB = stod(argv[i+1]);
 		}else if (arg_behaviorHistory.compare(argv[i])==0){
 			behaviorHistory = stoi(argv[i+1]);
+		}else if (arg_deathRate.compare(argv[i])==0){
+			deathRate = stod(argv[i+1]);
 		}else{
 			cout<<"Wrong option "<<argv[i]<<endl;
 		}
@@ -140,8 +144,8 @@ int main(int argc, char* argv[]){
 	simulationData.ephBirthGenerationChance = ephBirthGenerationChance;
 	simulationData.aOnly = false;
 	simulationData.neighborhoodInheritance = ni;
-	simulationData.birthRate = 1.04;
-	simulationData.deathRate = 1.04;
+	simulationData.birthRate = deathRate;
+	simulationData.deathRate = deathRate;
 	simulationData.plotDensity = 100;
 	simulationData.cycles = cycles;
 	simulationData.initialPop = g->nodes.size();
