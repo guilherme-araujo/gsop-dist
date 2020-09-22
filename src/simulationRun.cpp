@@ -177,7 +177,9 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 
 	clock_t begin = clock();
 
-	for(int i = 0; i < simulationData.cycles; i++){
+	//for(int i = 0; i < simulationData.cycles; i++){
+	int i = 0;
+	while (i++ < simulationData.cycles || simulationData.cycles < 1){
 		string behaviorSnapshot;
 		SimulationCycles::cycleV8(&nodesmap, simulationData, &eng, &behaviorSnapshot);
 
