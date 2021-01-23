@@ -40,6 +40,7 @@ class SimulationData{
 	double cheaterChanceA;
 	double cheaterChanceB;
 	bool printPartials;
+	bool lockABEph;
 
 	int sampleid;
 	std::vector<std::string> nodeDetail;

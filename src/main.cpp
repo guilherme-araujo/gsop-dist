@@ -12,7 +12,7 @@ void waitupdate(){
 }
 
 string str_nbuild = "-v";
-string nbuild = "20200529.001";
+string nbuild = "20210123.001";
 
 int main(int argc, char* argv[]){
 
@@ -41,6 +41,7 @@ int main(int argc, char* argv[]){
 	double cheaterChanceA = 0.0;
 	double cheaterChanceB = 0.0;
 	double deathRate = 1.04;
+	bool lockABEph = false;
 
 	//Simulation values parsing from argv
 	string arg_samples = "samples";
@@ -67,6 +68,7 @@ int main(int argc, char* argv[]){
 	string arg_cheaterChanceA = "cheaterA";
 	string arg_cheaterChanceB = "cheaterB";
 	string arg_deathRate = "deathRate";
+	string arg_lockABEph = "lockABEph";
 
 	for(int i = 1; i < argc; i+=2){
 		if(str_nbuild.compare(argv[i])==0){
@@ -120,6 +122,8 @@ int main(int argc, char* argv[]){
 			behaviorHistory = stoi(argv[i+1]);
 		}else if (arg_deathRate.compare(argv[i])==0){
 			deathRate = stod(argv[i+1]);
+		}else if (arg_lockABEph.compare(argv[i])==0){
+			lockABEph = stoi(argv[i+1]);
 		}else{
 			cout<<"Wrong option "<<argv[i]<<endl;
 		}
@@ -163,6 +167,7 @@ int main(int argc, char* argv[]){
 	simulationData.behaviorHistory = behaviorHistory;
 	simulationData.cheaterChanceA = cheaterChanceA;
 	simulationData.cheaterChanceB = cheaterChanceB;
+	simulationData.lockABEph = lockABEph;
 
 	//Launch simulation threads according to number of samples
 	vector<thread> tl;

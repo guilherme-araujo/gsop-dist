@@ -102,7 +102,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 				double chosen = distr(*eng);
 				if(chosen < simulationData.ephBirthGenerationChance){
 					n->behavior = USING;
-					Eph *e = new Eph(simulationData.ephBonus);
+					Eph *e = new Eph(simulationData.ephBonus, n->type);
 					e->time = simulationData.ephTime;
 					n->eph = e;
 					n->behaviorTimer = 0;
@@ -141,22 +141,37 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 
 		} //end of neighborhood inheritance else
 
-		//eph reuse section. ephs can be used by types A and B interchangeably
+		//eph reuse section. ephs can be used by types A and B interchangeably if lockABEph is false.
 		if(eph != NULL){
 			vector<int> currentKeys;
-			for(unsigned int i = 0; i < neighborsList.size(); i++){
-				GsopNode neighbor = (*nodes)[neighborsList[i]];
-				if(neighbor.type=='A'){
-					if(simulationData.isAReuser){
-						currentKeys.push_back(neighborsList[i]);
-					}
-				}else if(neighbor.type=='B'){
-					if(simulationData.isBReuser){
-						currentKeys.push_back(neighborsList[i]);
+			if(!simulationData.lockABEph){
+				for(unsigned int i = 0; i < neighborsList.size(); i++){
+					GsopNode neighbor = (*nodes)[neighborsList[i]];
+					if(neighbor.type=='A'){
+						if(simulationData.isAReuser){
+							currentKeys.push_back(neighborsList[i]);
+						}
+					}else if(neighbor.type=='B'){
+						if(simulationData.isBReuser){
+							currentKeys.push_back(neighborsList[i]);
+						}
 					}
 				}
-
+			} else { //if ephs of type A and B are locked to individuals of its original type
+				for(unsigned int i = 0; i < neighborsList.size(); i++){
+					GsopNode neighbor = (*nodes)[neighborsList[i]];
+					if(neighbor.type=='A' && eph->type=='A'){
+						if(simulationData.isAReuser){
+							currentKeys.push_back(neighborsList[i]);
+						}
+					}else if(neighbor.type=='B' && eph->type=='B'){
+						if(simulationData.isBReuser){
+							currentKeys.push_back(neighborsList[i]);
+						}
+					}
+				}
 			}
+			
 
 			shuffle(currentKeys.begin(), currentKeys.end(), *eng);
 			bool pegou = false;
@@ -174,19 +189,35 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 			if(!pegou){
 				currentKeys.clear();
 
-				//currentKeys = keys;
-				for(unsigned int i = 0; i < keys.size(); i++){
-					int ckey = keys[i];
-					if((*nodes)[ckey].type == 'A'){
-						if(simulationData.isAReuser){
-							currentKeys.push_back(keys[i]);
+				//check if ephs are locked by type
+				if(!simulationData.lockABEph){
+					for(unsigned int i = 0; i < keys.size(); i++){
+						int ckey = keys[i];
+						if((*nodes)[ckey].type == 'A'){
+							if(simulationData.isAReuser){
+								currentKeys.push_back(keys[i]);
+							}
+						}else if((*nodes)[ckey].type == 'B'){
+							if(simulationData.isBReuser){
+								currentKeys.push_back(keys[i]);
+							}
 						}
-					}else if((*nodes)[ckey].type == 'B'){
-						if(simulationData.isBReuser){
-							currentKeys.push_back(keys[i]);
+					}
+				} else {
+					for(unsigned int i = 0; i < keys.size(); i++){
+						int ckey = keys[i];
+						if((*nodes)[ckey].type == 'A' && eph->type == 'A'){
+							if(simulationData.isAReuser){
+								currentKeys.push_back(keys[i]);
+							}
+						}else if((*nodes)[ckey].type == 'B' && eph->type == 'B'){
+							if(simulationData.isBReuser){
+								currentKeys.push_back(keys[i]);
+							}
 						}
 					}
 				}
+				
 
 				if(currentKeys.size() > 0) shuffle(currentKeys.begin(), currentKeys.end(), *eng);
 
@@ -335,7 +366,7 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 			}else if(n->behavior == PRODUCING){
 				//cout<<"gerou\n";
 				n->behavior = USING;
-				Eph *e = new Eph(simulationData.ephBonus);
+				Eph *e = new Eph(simulationData.ephBonus, n->type);
 				e->time = simulationData.ephTime;
 				n->eph = e;
 				n->behaviorTimer = 0;

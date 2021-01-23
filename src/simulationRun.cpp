@@ -50,7 +50,7 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 					nodes[i].cheater = false;
 					
 				} else if(i < aEphIndexUsingShared){
-					Eph *e = new Eph(simulationData.ephBonus);
+					Eph *e = new Eph(simulationData.ephBonus, nodes[i].type);
 
 					//randomize eph time, -1 because reused ephs have had at least 1 cycle with previous owner
 					uniform_int_distribution<> distr_eph(1, simulationData.ephTime-1);
@@ -67,7 +67,7 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 						nodes[i].cheater = false;
 					}
 				} else{
-					Eph *e = new Eph(simulationData.ephBonus);
+					Eph *e = new Eph(simulationData.ephBonus, nodes[i].type);
 
 					//randomize eph time
 					uniform_int_distribution<> distr_eph(1, simulationData.ephTime);
@@ -124,7 +124,7 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 					}else{
 						nodes[i].cheater = false;
 					}
-					Eph *e = new Eph(simulationData.ephBonus);
+					Eph *e = new Eph(simulationData.ephBonus, nodes[i].type);
 
 					//randomize eph time
 					uniform_int_distribution<> distr_eph(1, simulationData.ephTime-1);
@@ -134,7 +134,7 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 					nodes[i].behavior = USING_SHARED;
 				}else{
 					
-					Eph *e = new Eph(simulationData.ephBonus);
+					Eph *e = new Eph(simulationData.ephBonus, nodes[i].type);
 
 					//randomize eph time
 					uniform_int_distribution<> distr_eph(1, simulationData.ephTime);
