@@ -12,7 +12,7 @@ void waitupdate(){
 }
 
 string str_nbuild = "-v";
-string nbuild = "20210123.001";
+string nbuild = "20210501.001";
 
 int main(int argc, char* argv[]){
 
@@ -36,6 +36,8 @@ int main(int argc, char* argv[]){
 	double reuseBonusMultiplierB = 0.9;
 	double buildingBonusA = 0.99;
 	double buildingBonusB = 0.93;
+	double searchingBonusA = 1.0;
+	double searchingBonusB = 1.0;
 	double ephBirthGenerationChance = 0.0;
 	bool printPartials = false;
 	double cheaterChanceA = 0.0;
@@ -63,6 +65,8 @@ int main(int argc, char* argv[]){
 	string arg_reuseBonusMultiplierB = "rBMB";
 	string arg_buildingBonusA = "bBA";
 	string arg_buildingBonusB = "bBB";
+	string arg_searchingBonusA = "sBA";
+	string arg_searchingBonusB = "sBB";
 	string arg_ephBirthGenerationChance = "ephBirthGenChance";
 	string arg_printPartials = "printPartials";
 	string arg_cheaterChanceA = "cheaterA";
@@ -110,6 +114,10 @@ int main(int argc, char* argv[]){
 			buildingBonusA = stod(argv[i+1]);
 		}else if (arg_buildingBonusB.compare(argv[i])==0){
 			buildingBonusB = stod(argv[i+1]);
+		}else if (arg_searchingBonusA.compare(argv[i])==0){
+			searchingBonusA = stod(argv[i+1]);
+		}else if (arg_searchingBonusB.compare(argv[i])==0){
+			searchingBonusB = stod(argv[i+1]);
 		}else if (arg_ephBirthGenerationChance.compare(argv[i])==0){
 			ephBirthGenerationChance = stod(argv[i+1]);
 		}else if (arg_printPartials.compare(argv[i])==0){
@@ -163,6 +171,8 @@ int main(int argc, char* argv[]){
 	simulationData.reuseBonusMultiplierB = reuseBonusMultiplierB;
 	simulationData.buildingBonusA = buildingBonusA;
 	simulationData.buildingBonusB = buildingBonusB;
+	simulationData.searchingBonusA = searchingBonusA;
+	simulationData.searchingBonusB = searchingBonusB;
 	simulationData.printPartials = printPartials;
 	simulationData.behaviorHistory = behaviorHistory;
 	simulationData.cheaterChanceA = cheaterChanceA;

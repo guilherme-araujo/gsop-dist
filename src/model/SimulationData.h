@@ -32,6 +32,8 @@ class SimulationData{
 	double reuseBonusMultiplierB;
 	double buildingBonusA;
 	double buildingBonusB;
+	double searchingBonusA;
+	double searchingBonusB;
 	bool isAProducer;
 	bool isBProducer;
 	bool isAReuser;

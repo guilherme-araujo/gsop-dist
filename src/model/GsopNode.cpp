@@ -21,9 +21,13 @@ double GsopNode::getCoeffV8(SimulationData sd){
     } else{
       stateCoeff = sd.buildingBonusB;
     }
-  }
-
-  if(this->behavior == USING_SHARED){
+  } else if (this->behavior == SEARCHING) {
+    if(this->type == 'A'){
+      stateCoeff = sd.searchingBonusA;
+    } else{
+      stateCoeff = sd.searchingBonusB;
+    }
+  } else if(this->behavior == USING_SHARED){
     if(this->type == 'A'){
       adjustedBonus = adjustedBonus * sd.reuseBonusMultiplierA;
     } else{
