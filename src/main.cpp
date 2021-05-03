@@ -12,7 +12,7 @@ void waitupdate(){
 }
 
 string str_nbuild = "-v";
-string nbuild = "20210501.001";
+string nbuild = "20210502.001";
 
 int main(int argc, char* argv[]){
 
@@ -43,6 +43,7 @@ int main(int argc, char* argv[]){
 	double cheaterChanceA = 0.0;
 	double cheaterChanceB = 0.0;
 	double deathRate = 1.04;
+	bool aOnly = false;
 	bool lockABEph = false;
 
 	//Simulation values parsing from argv
@@ -73,6 +74,7 @@ int main(int argc, char* argv[]){
 	string arg_cheaterChanceB = "cheaterB";
 	string arg_deathRate = "deathRate";
 	string arg_lockABEph = "lockABEph";
+	string arg_aOnly = "aOnly";
 
 	for(int i = 1; i < argc; i+=2){
 		if(str_nbuild.compare(argv[i])==0){
@@ -132,6 +134,8 @@ int main(int argc, char* argv[]){
 			deathRate = stod(argv[i+1]);
 		}else if (arg_lockABEph.compare(argv[i])==0){
 			lockABEph = stoi(argv[i+1]);
+		}else if (arg_aOnly.compare(argv[i])==0){
+			aOnly = stoi(argv[i+1]);
 		}else{
 			cout<<"Wrong option "<<argv[i]<<endl;
 		}
@@ -154,7 +158,7 @@ int main(int argc, char* argv[]){
 	simulationData.ephBuildingRatio = ephBuildingRatio;
 	simulationData.ephReusingRatio = ephReusingRatio;
 	simulationData.ephBirthGenerationChance = ephBirthGenerationChance;
-	simulationData.aOnly = false;
+	simulationData.aOnly = aOnly;
 	simulationData.neighborhoodInheritance = ni;
 	simulationData.birthRate = deathRate;
 	simulationData.deathRate = deathRate;

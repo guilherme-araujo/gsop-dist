@@ -20,7 +20,7 @@ SimulationResults SimulationRun::runSimV8(SimulationData simulationData, int ti)
 	shuffle(nodes.begin(), nodes.end(), eng);
 
 	unordered_map<int, GsopNode> nodesmap;
-	simulationData.aOnly = false;
+	//simulationData.aOnly = false;
 	//simulationData.bEph = true;
 	simulationData.neighborhoodInheritance = false; //V8 simulations are always without neighborhood inheritance
 
