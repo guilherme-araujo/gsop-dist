@@ -32,6 +32,7 @@ int main(int argc, char* argv[]){
 	int sampleid = 0;
 	bool bEph = 1;
 	int behaviorTime = 30;
+	int buildingTime = behaviorTime;
 	double reuseBonusMultiplierA = 0.3;
 	double reuseBonusMultiplierB = 0.9;
 	double buildingBonusA = 0.99;
@@ -62,6 +63,7 @@ int main(int argc, char* argv[]){
 	string arg_sampleid = "sampleId";
 	string arg_bEph = "bEph";
 	string arg_behaviorTime = "behaviorTime";
+	string arg_buildingTime = "buildingTime";
 	string arg_reuseBonusMultiplierA = "rBMA";
 	string arg_reuseBonusMultiplierB = "rBMB";
 	string arg_buildingBonusA = "bBA";
@@ -108,6 +110,8 @@ int main(int argc, char* argv[]){
 			bEph = stoi(argv[i+1]);
 		}else if (arg_behaviorTime.compare(argv[i])==0){
 			behaviorTime = stoi(argv[i+1]);
+		}else if (arg_buildingTime.compare(argv[i])==0){
+			buildingTime = stoi(argv[i+1]);
 		}else if (arg_reuseBonusMultiplierA.compare(argv[i])==0){
 			reuseBonusMultiplierA = stod(argv[i+1]);
 		}else if (arg_reuseBonusMultiplierB.compare(argv[i])==0){
@@ -171,6 +175,7 @@ int main(int argc, char* argv[]){
 	simulationData.sampleid = sampleid;
 	simulationData.bEph = bEph;
 	simulationData.behaviorTime = behaviorTime;
+	simulationData.buildingTime = buildingTime;
 	simulationData.reuseBonusMultiplierA = reuseBonusMultiplierA;
 	simulationData.reuseBonusMultiplierB = reuseBonusMultiplierB;
 	simulationData.buildingBonusA = buildingBonusA;

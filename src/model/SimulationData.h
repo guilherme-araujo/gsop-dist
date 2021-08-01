@@ -28,6 +28,7 @@ class SimulationData{
 	bool behaviorHistory;
 	int ephTime;
 	int behaviorTime;
+	int buildingTime;
 	double reuseBonusMultiplierA;
 	double reuseBonusMultiplierB;
 	double buildingBonusA;

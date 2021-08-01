@@ -354,12 +354,12 @@ void SimulationCycles::cycleV8(unordered_map<int,GsopNode> *nodes, SimulationDat
 				if(n->type=='A'){
 					if(simulationData.isAProducer){
 						n->behavior = PRODUCING;
-						n->behaviorTimer = simulationData.ephTime;
+						n->behaviorTimer = simulationData.buildingTime;
 					}
 				}else if(n->type=='B'){
 					if(simulationData.isBProducer){
 						n->behavior = PRODUCING;
-						n->behaviorTimer = simulationData.ephTime;
+						n->behaviorTimer = simulationData.buildingTime;
 					}
 				}
 
